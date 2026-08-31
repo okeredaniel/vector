@@ -1,0 +1,266 @@
+.sandbox-backdrop {
+  position: fixed;
+  inset: 0;
+  /* background: rgba(8, 5, 13, 0.75); */
+  backdrop-filter: blur(5px);
+  z-index: 105;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: settings-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes sandbox-fade-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Modal shell ── */
+.sandbox-modal {
+  width: 92vw;
+  max-width: 960px;
+  height: 82vh;
+  max-height: 720px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.85),
+    0 0 40px rgba(124, 58, 237, 0.18);
+  overflow: hidden;
+  color: #ece7ef;
+  font-family: inherit;
+}
+
+/* ── Header ── */
+.sandbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: #202020;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.sandbox-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sandbox-title-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+}
+
+.sandbox-title-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f3f2f5;
+  letter-spacing: -0.01em;
+}
+
+.sandbox-lang-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 20px;
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  color: #c4b5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sandbox-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sandbox-header-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cdc9e6;
+  border-radius: 8px;
+  padding: 5px 11px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.sandbox-header-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.sandbox-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #9a94b8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+
+.sandbox-close:hover {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #f87171;
+}
+
+/* ── Tab bar ── */
+.sandbox-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 18px;
+  background: #1a1a1a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.sandbox-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: #8b85a3;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.sandbox-tab:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ece7ef;
+}
+
+.sandbox-tab.active {
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  color: #c4b5fd;
+  font-weight: 600;
+}
+
+/* ── Body ── */
+.sandbox-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sandbox-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+  display: block;
+}
+
+/* ── Code panel (when viewing source) ── */
+.sandbox-code-panel {
+  flex: 1;
+  overflow-y: auto;
+  background: #141414;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.sandbox-code-view {
+  margin: 0;
+  padding: 20px 24px;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #cdc9e6;
+  background: transparent;
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+.sandbox-code-view code {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── Non-renderable language fallback ── */
+.sandbox-non-renderable {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sandbox-nr-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(251, 191, 36, 0.1);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+  font-size: 12.5px;
+  color: #fde68a;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+.sandbox-nr-banner svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #fbbf24;
+}
+
+.sandbox-non-renderable .sandbox-code-panel {
+  flex: 1;
+}
+
+/* ── Status bar ── */
+.sandbox-statusbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  background: #141414;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10.5px;
+  color: #6b6585;
+  flex-shrink: 0;
+}
+
+.statusbar-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.statusbar-sep {
+  flex: 1;
+}

@@ -1,0 +1,166 @@
+.perm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 5, 13, 0.75);
+  backdrop-filter: blur(5px);
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: perm-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes perm-fade-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.perm-modal {
+  width: 100%;
+  max-width: 420px;
+  background: #1a1a1a;
+  border: 1px solid rgba(251, 190, 36, 0.055);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(251, 191, 36, 0.12);
+  color: #ece7ef;
+  font-family: inherit;
+}
+
+.perm-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.perm-header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.perm-header-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #f3f2f5;
+}
+
+.perm-header-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #b7b2cc;
+  line-height: 1.5;
+}
+
+.perm-tool-name {
+  background: rgba(198, 167, 252, 0.18);
+  /* border: 1px solid rgba(167, 139, 250, 0.35); */
+  color: #ff4b4b;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+}
+
+.perm-args {
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  max-height: 160px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.perm-arg-row {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.perm-arg-key {
+  color: #8b85a3;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+}
+
+.perm-arg-value {
+  color: #d7d3e6;
+  word-break: break-all;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+}
+
+.perm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.perm-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+}
+
+.perm-deny {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+
+.perm-deny:hover {
+  background: rgba(248, 113, 113, 0.2);
+}
+
+.perm-allow-once {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #ece7ef;
+}
+
+.perm-allow-once:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.perm-allow-forever {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border-color: rgba(167, 139, 250, 0.4);
+  color: #ffffff;
+}
+
+.perm-allow-forever:hover {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+}
+
+.perm-timeout-note {
+  margin: 12px 0 0 0;
+  font-size: 10.5px;
+  color: #6b6585;
+  text-align: center;
+}

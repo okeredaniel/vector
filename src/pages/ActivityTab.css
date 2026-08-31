@@ -1,0 +1,593 @@
+/* ── ActivityTab Root ─────────────────────────────────────────────────── */
+.activity-tab {
+  min-height: 100vh;
+  background: #151515;
+  /* background:
+  radial-gradient(ellipse 1000px 400px at 50% 0%, rgba(0, 0, 0, 0.28) 0%, transparent 75%),
+  radial-gradient(ellipse at 50% 30%, #150a1e 0%, #08050d 45%, #030204 100%); */
+  overflow: hidden;
+  color: #f3f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 50px 50px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  animation: activity-tab-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes activity-tab-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+.activity-header {
+  margin: 0 auto 28px;
+}
+
+.activity-eyebrow {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.activity-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f3f2f5;
+}
+
+.activity-subtitle {
+  margin: 0 0 17px;
+  font-size: 13px;
+  color: #8b88a6;
+  line-height: 1.5;
+}
+
+/* ── Stats Grid ───────────────────────────────────────────────────────── */
+.activity-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.activity-stat-card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* border-left: 2px solid var(--stat-color, #a78bfa); */
+  /* border-right: 2px solid var(--stat-color, #a78bfa); */
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.activity-stat-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+  /* box-shadow: 0 8px 24px color-mix(in srgb, var(--stat-color, #a78bfa) 15%, transparent); */
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8b88a6;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-icon-wrap {
+  color: var(--stat-color, #a78bfa);
+  opacity: 0.85;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f3f2f5;
+  letter-spacing: -0.01em;
+}
+
+/* ── Filter Controls ─────────────────────────────────────────────────── */
+.activity-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 2px 0 4px;
+  /* border-top: 1px solid rgba(255, 255, 255, 0.06); */
+}
+
+.activity-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.activity-filter-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.035);
+  color: #8b88a6;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.activity-filter-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f3f2f5;
+}
+
+.activity-filter-chip.active {
+  background: rgba(167, 139, 250, 0.16);
+  border-color: rgba(167, 139, 250, 0.38);
+  color: #f3f2f5;
+}
+
+.activity-search-wrap {
+  min-width: 220px;
+}
+
+.activity-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 12px;
+  color: #f3f2f5;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.activity-search-input:focus {
+  border-color: rgba(167, 139, 250, 0.38);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.activity-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Activity List Feed Rows ─────────────────────────────────────────── */
+.activity-list {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.activity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 3px solid var(--agent-color, #a78bfa);
+  border-right: 3px solid var(--agent-color, #a78bfa);
+  border-radius: 14px;
+  padding: 14px 18px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  animation: activity-row-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes activity-row-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.activity-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  transform: translateX(4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.activity-agent-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.agent-info{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.agent-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.agent-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f3f2f5;
+}
+
+.agent-node {
+  font-size: 11px;
+  color: #8b88a6;
+}
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-action-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.activity-type-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a78bfa;
+  border-radius: 4px;
+  white-space: nowrap;
+  
+}
+
+.activity-action-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e4e0ea;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-detail-text {
+  margin: 0;
+  font-size: 11.5px;
+  color: #8b88a6;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.activity-status-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.activity-status-badge.status-completed {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.14);
+}
+
+.activity-status-badge.status-alert {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.14);
+}
+
+.activity-status-badge.status-pending_review {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.14);
+}
+
+.activity-time-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #7a7590;
+}
+
+.activity-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 158px 0;
+  color: #8b88a6;
+}
+
+.activity-empty-state p{
+  margin: 4px;
+}
+
+.empty-icon {
+  color: #a78bfa;
+  opacity: 0.6;
+}
+
+/* ── Activity Detail Modal Overlay ────────────────────────────────────── */
+.activity-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  /* background: rgba(4, 2, 10, 0.72); */
+  /* backdrop-filter: blur(8px); */
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  animation: activity-modal-fade 0.25s ease-out;
+}
+
+@keyframes activity-modal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.topclose{
+  display: flex;
+  align-items: end;
+}
+
+.activity-side-modal {
+  width: min(450px, 100%);
+  height: 100%;
+  background: rgba(4, 5, 10, 0.795);
+  /* backdrop-filter: blur(3px); */
+  border-left: 1px solid rgba(255, 255, 255, 0.089);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  animation: activity-modal-slide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes activity-modal-slide {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.activity-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-activity-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #f3f2f5;
+  line-height: 1.35;
+}
+
+.activity-modal-close {
+  background: transparent;
+  border: transparent;
+  color: #908da1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.activity-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f3f2f5;
+  transform: scale(1.08);
+}
+
+.activity-modal-agent-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+
+.modal-agent-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f3f2f5;
+}
+
+.modal-agent-node {
+  font-size: 11px;
+  color: #8b88a6;
+  flex: 1;
+}
+
+.activity-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.modal-spec-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.spec-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7b7492;
+}
+
+.spec-value {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #f3f2f5;
+}
+
+.spec-value.code {
+  font-family: "SF Mono", "Courier New", monospace;
+  color: #a78bfa;
+}
+
+.spec-value.highlight {
+  color: #4ade80;
+}
+
+.activity-modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-title {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #7b7492;
+  font-family: "SF Mono", "Courier New", monospace;
+}
+
+.modal-detail-desc {
+  margin: 0;
+  font-size: 13px;
+  color: #cdc9e6;
+  line-height: 1.55;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.activity-log-box {
+  background: rgba(6, 3, 14, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  overflow-x: auto;
+}
+
+.activity-log-box pre {
+  margin: 0;
+  font-family: "SF Mono", "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #38bdf8;
+}
+
+.activity-modal-footer {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.activity-modal-action-btn {
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.18), rgba(124, 58, 237, 0.12));
+  color: #f3f2f5;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activity-modal-action-btn:hover {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.28), rgba(124, 58, 237, 0.22));
+  border-color: rgba(167, 139, 250, 0.55);
+}
+
+/* Append to ActivityTab.css — reload button + its row wrapper */
+
+.activity-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.activity-reload-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.035);
+  color: #8b88a6;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.activity-reload-btn:hover:not(:disabled) {
+  background: rgba(167, 139, 250, 0.14);
+  border-color: rgba(167, 139, 250, 0.32);
+  color: #f3f2f5;
+}
+
+.activity-reload-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.activity-reload-btn .spinning {
+  animation: activity-reload-spin 0.7s linear infinite;
+}
+
+@keyframes activity-reload-spin {
+  to { transform: rotate(360deg); }
+}

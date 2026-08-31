@@ -1,0 +1,378 @@
+/* ── AccountTab root ──────────────────────────────────────────────────── */
+.account-tab {
+  min-height: 100vh;
+  background: #151515;
+  overflow: hidden;
+  color: #f3f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 50px 50px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+.at-header {
+  /* max-width: 860px; */
+  margin: 0 auto 28px;
+  animation: atHeaderEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.at-header-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 1px;
+}
+
+.at-title {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+  color: #f3f2f5;
+  letter-spacing: 0.01em;
+}
+
+.at-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  background: rgba(167, 139, 250, 0.12);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.at-subtitle {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: #8b88a6;
+  line-height: 1.5;
+}
+
+/* ── Search bar ───────────────────────────────────────────────────────── */
+.at-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 14px;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s ease;
+}
+
+.at-search-wrap:focus-within {
+  border-color: rgba(167, 139, 250, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.at-search-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.at-search {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f3f2f5;
+  font-size: 13px;
+  font-family: inherit;
+  caret-color: #a78bfa;
+}
+
+.at-search::placeholder {
+  color: rgba(167, 139, 250, 0.35);
+}
+
+/* ── Tool grid ────────────────────────────────────────────────────────── */
+.at-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 16px;
+  /* max-width: 860px; */
+  margin: 0 auto;
+}
+
+.at-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #8b88a6;
+  font-size: 13px;
+  padding: 40px 0;
+}
+
+/* ── Tool card ────────────────────────────────────────────────────────── */
+.at-tool-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid color-mix(in srgb, var(--tool-color) 25%, transparent);
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  animation: atCardEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.at-tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--tool-color), transparent);
+  opacity: 0.4;
+}
+
+.at-tool-card:hover {
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--tool-color) 12%, transparent);
+}
+
+/* ── Card header ──────────────────────────────────────────────────────── */
+.at-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.at-card-icon {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tool-color) 12%, rgba(255,255,255,0.04));
+  border: 1px solid color-mix(in srgb, var(--tool-color) 22%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.at-card-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.at-card-title {
+  margin: 0 0 3px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f3f2f5;
+  letter-spacing: 0.01em;
+}
+
+.at-card-desc {
+  margin: 0;
+  font-size: 11.5px;
+  color: #8b88a6;
+  line-height: 1.45;
+}
+
+.at-card-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--tool-color);
+  flex-shrink: 0;
+  margin-top: 4px;
+  box-shadow: 0 0 6px var(--tool-color);
+  animation: dotPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; box-shadow: 0 0 10px var(--tool-color); }
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────────────── */
+.at-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.at-tab {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 5px 11px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #8b88a6;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.at-tab:hover {
+  color: #f3f2f5;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.at-tab.active {
+  background: color-mix(in srgb, var(--tool-color) 16%, transparent);
+  border-color: color-mix(in srgb, var(--tool-color) 40%, transparent);
+  color: var(--tool-color);
+}
+
+/* ── Fields ───────────────────────────────────────────────────────────── */
+.at-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.at-field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #6b6884;
+}
+
+.at-input,
+.at-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: #f3f2f5;
+  outline: none;
+  transition: border-color 0.18s ease, background 0.18s ease;
+  caret-color: var(--tool-color);
+  resize: vertical;
+}
+
+.at-input::placeholder,
+.at-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.18);
+}
+
+.at-input:focus,
+.at-textarea:focus {
+  border-color: color-mix(in srgb, var(--tool-color) 50%, transparent);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Voice picker ─────────────────────────────────────────────────────── */
+.at-voice-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.at-voice-toggle {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--tool-color) 30%, transparent);
+  background: color-mix(in srgb, var(--tool-color) 10%, transparent);
+  color: var(--tool-color);
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.at-voice-toggle:hover {
+  background: color-mix(in srgb, var(--tool-color) 18%, transparent);
+}
+
+.at-voice-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.at-voice-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #8b88a6;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.02em;
+}
+
+.at-voice-chip:hover {
+  color: #f3f2f5;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.at-voice-chip.selected {
+  background: color-mix(in srgb, var(--tool-color) 18%, transparent);
+  border-color: color-mix(in srgb, var(--tool-color) 45%, transparent);
+  color: var(--tool-color);
+}
+
+/* ── Action button ────────────────────────────────────────────────────── */
+.at-action-btn {
+  width: 100%;
+  padding: 11px;
+  border-radius: 11px;
+  border: 1px solid color-mix(in srgb, var(--tool-color) 35%, transparent);
+  background: color-mix(in srgb, var(--tool-color) 14%, rgba(255,255,255,0.03));
+  color: var(--tool-color);
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+  margin-top: auto;
+}
+
+.at-action-btn:hover {
+  background: color-mix(in srgb, var(--tool-color) 22%, rgba(255,255,255,0.05));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--tool-color) 25%, transparent);
+}
+
+.at-action-btn:active {
+  transform: scale(0.98);
+}
+
+/* ── Entrance Animations ─────────────────────────────────────────────── */
+@keyframes atHeaderEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes atCardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+

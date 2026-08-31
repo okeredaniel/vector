@@ -1,0 +1,373 @@
+/* Claude-inspired Markdown Message Formatting */
+
+.md-message.claude-style {
+  font-size: 14.5px;
+  line-height: 1.68;
+  color: #e6e3ed;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+
+.md-message.claude-style p {
+  letter-spacing: -0.03rem;
+  margin: 0 0 14px 0;
+}
+
+.md-hr-spacer {
+  height: 2px;
+}
+
+.md-message.claude-style p:last-child {
+  margin-bottom: 0;
+}
+
+.md-message.claude-style strong {
+  font-weight: 650;
+  color: #ffffff;
+}
+
+.md-message.claude-style em {
+  font-style: italic;
+  color: #dcd6e8;
+}
+
+/* Claude Headings */
+.md-message.claude-style h1,
+.md-message.claude-style h2,
+.md-message.claude-style h3,
+.md-message.claude-style h4 {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 20px 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+.md-message.claude-style h1 {
+  font-size: 19px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 6px;
+}
+
+.md-message.claude-style h2 {
+  font-size: 17px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 4px;
+}
+
+.md-message.claude-style h3 {
+  font-size: 15.5px;
+}
+
+.md-message.claude-style h4 {
+  font-size: 14.5px;
+}
+
+/* Claude Lists */
+.md-message.claude-style ul,
+.md-message.claude-style ol {
+  margin: 0 0 14px 0;
+  padding-left: 22px;
+}
+
+.md-message.claude-style li {
+  margin-bottom: 6px;
+  line-height: 1.6;
+  letter-spacing: -0.01rem;
+}
+
+.md-message.claude-style li::marker {
+  color: #f9f9fa;
+}
+
+.md-message.claude-style li > ul,
+.md-message.claude-style li > ol {
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.md-message.claude-style strong a {
+  color: #3b11fa;
+  font-weight: 700;
+  font-size: 1.02em;
+  background: rgba(167, 139, 250, 0.12);
+  padding: 1px 7px;
+  border-radius: 5px;
+  border-bottom: 1.5px solid rgba(167, 139, 250, 0.55);
+}
+
+.md-message.claude-style strong a:hover {
+  color: #f5f3ff;
+  background: rgba(167, 139, 250, 0.22);
+  border-bottom-color: rgba(221, 214, 254, 0.95);
+}
+.md-message.claude-style a:active {
+  transform: scale(0.98);
+}
+
+/* Claude Blockquotes */
+.md-message.claude-style blockquote {
+  margin: 12px 0 16px 0;
+  padding: 10px 16px;
+  border-left: 3px solid #7c3aed;
+  background: rgba(124, 58, 237, 0.08);
+  border-radius: 0 10px 10px 0;
+  color: #d8d2e6;
+  font-style: italic;
+}
+
+.md-message.claude-style blockquote p {
+  margin-bottom: 0;
+}
+
+/* Claude Inline Code */
+.md-inline-code {
+  background: rgba(39, 39, 39, 0.12);
+  color: #f77e7e;
+  /* border: 1px solid rgba(167, 139, 250, 0.22); */
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* Claude Code Blocks */
+.md-code-block {
+  margin: 14px 0 18px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #121118;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.md-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #1d1b27;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.md-code-lang {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: lowercase;
+  color: #9a94b8;
+  letter-spacing: 0.02em;
+  font-family: "SFMono-Regular", Consolas, monospace;
+}
+
+.md-code-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.md-code-action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #b3adc8;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.md-code-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(167, 139, 250, 0.35);
+}
+
+.md-code-play {
+  color: #a78bfa;
+}
+
+.md-code-play:hover {
+  background: rgba(124, 58, 237, 0.2);
+  color: #c4b5fd;
+}
+
+.md-code-block pre {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  background: #121118;
+}
+
+.md-code-block code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  /* color: #e25959; */
+  background: none;
+}
+/* Claude Tables */
+.md-message.claude-style table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 16px 0 20px 0;
+  font-size: 13.5px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.md-message.claude-style th,
+.md-message.claude-style td {
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.md-message.claude-style th{
+  text-align: center !important;
+}
+
+/* Narrow index/# column — works because it has real content-based width
+   and no wide neighbor forcing it to stretch */
+.md-message.claude-style th:first-child,
+.md-message.claude-style td:first-child {
+  white-space: nowrap;
+  width: 1%;
+  padding-right: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  font-variant-numeric: tabular-nums;
+}
+
+.md-message.claude-style th {
+  background: rgba(167, 139, 250, 0.1);
+  font-weight: 650;
+  color: #ede9fe;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+.md-message.claude-style tr:last-child td {
+  border-bottom: none;
+}
+
+.md-message.claude-style tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.md-message.claude-style tr:hover td {
+  background: rgba(167, 139, 250, 0.06);
+}
+
+.md-message.claude-style th,
+.md-message.claude-style td {
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.md-message.claude-style th:last-child,
+.md-message.claude-style td:last-child {
+  border-right: none;
+}
+
+.md-img-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 320px;
+  /* margin: 10px 0 30px; */
+}
+
+.md-img-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.09) 37%,
+    rgba(255, 255, 255, 0.04) 63%
+  );
+  background-size: 400% 100%;
+  animation: chat-skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+.md-inline-img {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: zoom-in;
+  transition: transform 0.15s ease, opacity 0.25s ease;
+  display: block;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.md-inline-img:hover {
+  transform: scale(1.03);
+}
+.md-message a {
+  color: #a78bfa;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.35);
+  transition: border-color 0.15s ease;
+}
+
+.md-message a:hover {
+  border-bottom-color: rgba(167, 139, 250, 0.9);
+}
+
+.md-message p:has(strong > a) {
+  margin: 14px 0 2px 0;
+  font-size: 15px;
+}
+
+.md-message p:has(strong > a) + p {
+  margin: 0 0 12px 0;
+  opacity: 0.75;
+  font-size: 13.5px;
+}
+
+.md-img-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.md-img-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.09) 37%,
+    rgba(255, 255, 255, 0.04) 63%
+  );
+  background-size: 400% 100%;
+  animation: chat-skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+.md-inline-img {
+  transition: opacity 0.25s ease;
+}
+
+@keyframes chat-skeleton-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
