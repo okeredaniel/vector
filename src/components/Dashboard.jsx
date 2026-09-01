@@ -2,7 +2,6 @@ import { useMemo, useEffect, useState, useRef, useCallback } from "react";
 import "./Dashboard.css";
 import { useDraggableStage } from "./useDraggableStage.js";
 import NodeTooltip from "./NodeTooltip.jsx";
-import GlobeWidget from "./GlobeWidget.jsx";
 import SignalBars from "./SignalBars.jsx";
 import CoordinateReadout from "./CoordinateReadout.jsx";
 import { check as checkUpdate } from "@tauri-apps/plugin-updater";
