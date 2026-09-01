@@ -36,6 +36,14 @@ jobs:
         run: |
           echo "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" | base64 -d > "${{ runner.temp }}/vector.key"
 
+      - name: Debug key file
+        shell: bash
+        run: |
+          echo "File size in bytes:"
+          wc -c < "${{ runner.temp }}/vector.key"
+          echo "First line (should say untrusted comment):"
+          head -n 1 "${{ runner.temp }}/vector.key"
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
