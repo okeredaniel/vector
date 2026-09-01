@@ -769,15 +769,6 @@ const handleSubmit = (event) => {
             <button
               type="button"
               className="chat-header-btn"
-              onClick={handleExportChat}
-              title={`Export conversation as ${settings.exportFormat === "pdf" ? "PDF" : "Markdown"}`}
-            >
-              <Download size={15} />
-            </button>
-
-            <button
-              type="button"
-              className="chat-header-btn"
               onClick={() => setSettingsOpen(true)}
               title="Settings"
             >

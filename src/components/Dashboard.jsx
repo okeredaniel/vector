@@ -5,6 +5,9 @@ import NodeTooltip from "./NodeTooltip.jsx";
 import GlobeWidget from "./GlobeWidget.jsx";
 import SignalBars from "./SignalBars.jsx";
 import CoordinateReadout from "./CoordinateReadout.jsx";
+import { check as checkUpdate } from "@tauri-apps/plugin-updater";
+import { relaunch } from "@tauri-apps/plugin-process";
+import { getVersion } from "@tauri-apps/api/app";
 import {
   Settings,
   PenLine,
@@ -19,6 +22,7 @@ import {
   Bell,
   AlertTriangle,
   RefreshCw,
+  Download 
 } from "lucide-react";
 import Ytb from "../assets/Youtube.png"
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -32,6 +36,7 @@ const HUB = { x: 720, y: 450 };
 // both default to the live Render backend, never localhost.
 const API_BASE = "https://vector-backend-8neo.onrender.com";
 const WS_BASE = API_BASE.replace(/^http/, "ws");
+const RELEASES_API = "https://api.github.com/repos/okeredaniel/vector/releases";
 
 const WS_RECONNECT_BASE_MS = 1500;
 const WS_RECONNECT_MAX_MS = 20000;
@@ -107,7 +112,6 @@ const NODES = [
 
 function useStageScale(containerRef) {
   const [scale, setScale] = useState(1);
-
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -115,7 +119,8 @@ function useStageScale(containerRef) {
     function computeScale(width, height) {
       const scaleX = width / CANVAS_W;
       const scaleY = height / CANVAS_H;
-      setScale(Math.max(scaleX, scaleY));
+        const raw = Math.min(scaleX, scaleY); // or Math.max if you want cover
+  setScale(Math.min(Math.max(raw, 1.05), 1.5));
     }
 
     computeScale(el.clientWidth, el.clientHeight);
@@ -341,6 +346,14 @@ function providerFixToAction(fixId, entry) {
 }
 
 export default function Dashboard() {
+  const [currentVersion, setCurrentVersion] = useState(null);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+const [updateInfo, setUpdateInfo] = useState(null); // { version, body }
+const [updateChecking, setUpdateChecking] = useState(false);
+const [updateDownloading, setUpdateDownloading] = useState(false);
+const [updateLog, setUpdateLog] = useState([]);
+const [updateLogLoading, setUpdateLogLoading] = useState(false);
+const updateRef = useRef(null); // holds the actual Update object so we can install it later
   const [nodesList, setNodesList] = useState(NODES);
   const containerRef = useRef(null);
   const baseScale = useStageScale(containerRef);
@@ -369,6 +382,65 @@ const connectionState = !browserOnline
   : wsState === "open"
   ? "online"
   : "connecting";
+
+  const checkForUpdates = useCallback(async (silent = true) => {
+  setUpdateChecking(true);
+  try {
+    const update = await checkUpdate();
+    if (update?.available) {
+      updateRef.current = update;
+      setUpdateInfo({ version: update.version, body: update.body });
+    } else {
+      updateRef.current = null;
+      setUpdateInfo(null);
+    }
+  } catch (err) {
+    console.error("[Updater] check failed:", err);
+  } finally {
+    setUpdateChecking(false);
+  }
+}, []);
+
+const installUpdate = useCallback(async () => {
+  if (!updateRef.current) return;
+  setUpdateDownloading(true);
+  try {
+    await updateRef.current.downloadAndInstall();
+    await relaunch();
+  } catch (err) {
+    console.error("[Updater] install failed:", err);
+    setUpdateDownloading(false);
+  }
+}, []);
+
+const fetchUpdateLog = useCallback(async () => {
+  setUpdateLogLoading(true);
+  try {
+    const res = await fetch(RELEASES_API);
+    if (!res.ok) throw new Error(`status ${res.status}`);
+    const releases = await res.json();
+    setUpdateLog(
+      releases.map((r) => ({
+        version: r.tag_name,
+        name: r.name || r.tag_name,
+        notes: r.body || "No release notes provided.",
+        date: r.published_at ? new Date(r.published_at).toLocaleDateString() : "",
+      }))
+    );
+  } catch (err) {
+    console.error("[Updater] failed to fetch release log:", err);
+  } finally {
+    setUpdateLogLoading(false);
+  }
+}, []);
+
+const openUpdateModal = () => {
+  setActiveNode(null);
+  setShowNotifications(false);
+  setShowUpdateModal(true);
+  fetchUpdateLog();
+};
+const closeUpdateModal = () => setShowUpdateModal(false);
   
   const loadStatus = useCallback(async () => {
     try {
@@ -422,6 +494,9 @@ const connectionState = !browserOnline
     const interval = setInterval(loadStatus, NODE_STATUS_POLL_MS);
     return () => clearInterval(interval);
   }, [loadStatus]);
+  useEffect(() => {
+  getVersion().then(setCurrentVersion).catch(() => {});
+}, []);
 
   useEffect(() => {
     if (!activeNode) return;
@@ -608,18 +683,20 @@ useEffect(() => {
     }
   }, []);
 
-  useEffect(() => {
+    useEffect(() => {
     unmountedRef.current = false;
-
     refreshPendingActions();
     connectWs();
-
     return () => {
       unmountedRef.current = true;
       if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
       wsRef.current?.close();
     };
   }, [connectWs, refreshPendingActions]);
+
+  useEffect(() => {
+    checkForUpdates(true);
+  }, [checkForUpdates]);
 
   const closeModal = () => setActiveNode(null);
   const openNotifications = () => {
@@ -790,6 +867,19 @@ useEffect(() => {
           <span className="brand">VECTOR</span>
         </div>
         <div className="topbar-right">
+          <div
+  className="widget notification-widget icon-only"
+  role="button"
+  tabIndex={0}
+  onClick={openUpdateModal}
+  onKeyDown={(event) => {
+    if (event.key === "Enter" || event.key === " ") openUpdateModal();
+  }}
+  title={updateInfo ? `Update ${updateInfo.version} available` : "Check for updates"}
+>
+  <Download className="widget-icon" size={18} />
+  {updateInfo && <span className="topbar-bell-badge">1</span>}
+</div>
 <button
   className="ytb-box"
   onClick={() => openUrl("https://studio.youtube.com")}
@@ -809,7 +899,7 @@ useEffect(() => {
             }}
           >
 
-            <Bell className="widget-icon" size={20} />
+            <Bell className="widget-icon" size={17} />
             {pendingActions.length > 0 && (
               <span className="topbar-bell-badge">{pendingActions.length}</span>
             )}
@@ -925,6 +1015,90 @@ useEffect(() => {
           </aside>
         </div>
       )}
+
+      {showUpdateModal && (
+  <div className="modal-backdrop" onClick={closeUpdateModal}>
+    <aside className="side-modal" onClick={(event) => event.stopPropagation()}>
+      <div className="topclose">
+        <button
+          className="modal-close"
+          onClick={() => checkForUpdates(false)}
+          aria-label="Check for updates"
+          disabled={updateChecking}
+          style={{ marginRight: 8 }}
+        >
+          <RefreshCw size={16} strokeWidth={2} className={updateChecking ? "spin" : ""} />
+        </button>
+        <button className="modal-close" onClick={closeUpdateModal} aria-label="Close update log">
+          <X size={18} strokeWidth={2} />
+        </button>
+      </div>
+
+<div className="modal-header">
+  <div>
+    <p className="modal-tag">Software Updates</p>
+    <h2>Update Log</h2>
+    {currentVersion && <p className="modal-description2">Running v{currentVersion}</p>}
+  </div>
+</div>
+
+      <div className="modal-body">
+        {updateInfo ? (
+          <div className="action-popup-card" style={{ "--action-color": "#00ee3b" }}>
+            <div className="action-card-header">
+              <span
+                className="action-type-badge"
+                style={{ color: "#00ee3b", background: "color-mix(in srgb, #00ee3b 12%, transparent)" }}
+              >
+                UPDATE AVAILABLE
+              </span>
+            </div>
+            <h3 className="action-card-title">Version {updateInfo.version}</h3>
+            <p className="action-card-desc">{updateInfo.body || "No release notes provided."}</p>
+            <div className="action-btn-group">
+              <button
+                type="button"
+                className="action-decision-btn primary"
+                onClick={installUpdate}
+                disabled={updateDownloading}
+              >
+                {updateDownloading ? "Installing…" : "Download & Install"}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="notification-empty">
+            <div className="action-clear-icon">✓</div>
+            <p className="notification-title">
+              {updateChecking ? "Checking for updates…" : "VECTOR is up to date"}
+            </p>
+          </div>
+        )}
+
+        <div className="modal-section">
+          <p className="modal-section-label">Release History</p>
+          {updateLogLoading ? (
+            <p className="modal-description2">Loading release history…</p>
+          ) : updateLog.length === 0 ? (
+            <p className="modal-description2">No releases published yet.</p>
+          ) : (
+            <div className="model-cards">
+              {updateLog.map((rel) => (
+                <div key={rel.version} className="model-card">
+                  <div className="model-card-header">
+                    <span className="model-card-name">{rel.name}</span>
+                    <span className="model-card-provider">{rel.date}</span>
+                  </div>
+                  <p className="model-card-description">{rel.notes}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </aside>
+  </div>
+)}
 
       {showNotifications && (
         <div className="modal-backdrop" onClick={closeNotifications}>
