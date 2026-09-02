@@ -19,6 +19,8 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -39,6 +41,19 @@ jobs:
           echo "$KEY" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
+      - name: Generate changelog
+        shell: bash
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$PREV_TAG" ]; then
+            LOG=$(git log --pretty=format:"- %s")
+          else
+            LOG=$(git log --pretty=format:"- %s" "$PREV_TAG"..HEAD)
+          fi
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$LOG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,7 +61,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "VECTOR ${{ github.ref_name }}"
-          generateReleaseNotes: true
+          releaseBody: ${{ env.CHANGELOG }}
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
