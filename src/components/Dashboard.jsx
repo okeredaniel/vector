@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 import Ytb from "../assets/Youtube.png"
 import { openUrl } from "@tauri-apps/plugin-opener";
-const [downloadProgress, setDownloadProgress] = useState(0); // 0-100
 
 const CANVAS_W = 1440;
 const CANVAS_H = 900;
@@ -345,6 +344,8 @@ function providerFixToAction(fixId, entry) {
 }
 
 export default function Dashboard() {
+  
+const [downloadProgress, setDownloadProgress] = useState(0); // 0-100
   const [currentVersion, setCurrentVersion] = useState(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 const [updateInfo, setUpdateInfo] = useState(null); // { version, body }
@@ -1078,6 +1079,24 @@ useEffect(() => {
             </div>
             <h3 className="action-card-title">Version {updateInfo.version}</h3>
             <p className="action-card-desc">{updateInfo.body || "No release notes provided."}</p>
+                       {updateDownloading && (
+              <div style={{ marginBottom: 10 }}>
+                <div style={{
+                  width: "100%",
+                  height: 6,
+                  background: "rgba(255,255,255,0.1)",
+                  borderRadius: 4,
+                  overflow: "hidden",
+                }}>
+                  <div style={{
+                    width: `${downloadProgress}%`,
+                    height: "100%",
+                    background: "#00ee3b",
+                    transition: "width 0.2s ease",
+                  }} />
+                </div>
+              </div>
+            )}
             <div className="action-btn-group">
               <button
                 type="button"
@@ -1085,34 +1104,7 @@ useEffect(() => {
                 onClick={installUpdate}
                 disabled={updateDownloading}
               >
-              {updateDownloading && (
-  <div style={{ marginBottom: 10 }}>
-    <div style={{
-      width: "100%",
-      height: 6,
-      background: "rgba(255,255,255,0.1)",
-      borderRadius: 4,
-      overflow: "hidden",
-    }}>
-      <div style={{
-        width: `${downloadProgress}%`,
-        height: "100%",
-        background: "#00ee3b",
-        transition: "width 0.2s ease",
-      }} />
-    </div>
-  </div>
-)}
-<div className="action-btn-group">
-  <button
-    type="button"
-    className="action-decision-btn primary"
-    onClick={installUpdate}
-    disabled={updateDownloading}
-  >
-    {updateDownloading ? `Downloading… ${downloadProgress}%` : "Download & Install"}
-  </button>
-</div>
+                {updateDownloading ? `Downloading… ${downloadProgress}%` : "Download & Install"}
               </button>
             </div>
           </div>
