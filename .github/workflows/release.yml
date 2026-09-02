@@ -34,20 +34,14 @@ jobs:
       - name: Decode signing key
         shell: bash
         run: |
-          echo "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" | base64 -d > "${{ runner.temp }}/vector.key"
-
-      - name: Debug key file
-        shell: bash
-        run: |
-          echo "File size in bytes:"
-          wc -c < "${{ runner.temp }}/vector.key"
-          echo "First line (should say untrusted comment):"
-          head -n 1 "${{ runner.temp }}/vector.key"
+          KEY=$(echo "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" | base64 -d)
+          echo "TAURI_SIGNING_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+          echo "$KEY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_SIGNING_PRIVATE_KEY_PATH: ${{ runner.temp }}/vector.key
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
