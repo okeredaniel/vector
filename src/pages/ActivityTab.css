@@ -1,14 +1,11 @@
-/* ── ActivityTab Root ─────────────────────────────────────────────────── */
+/* ── ActivityTab Root (Pink UI Theme) ─────────────────────────────────── */
 .activity-tab {
   min-height: 100vh;
-  background: #151515;
-  /* background:
-  radial-gradient(ellipse 1000px 400px at 50% 0%, rgba(0, 0, 0, 0.28) 0%, transparent 75%),
-  radial-gradient(ellipse at 50% 30%, #150a1e 0%, #08050d 45%, #030204 100%); */
+  background: #0f0e13;
   overflow: hidden;
   color: #f3f2f5;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  padding: 50px 50px 20px;
+  padding: 45px 45px 20px;
   box-sizing: border-box;
   overflow-y: auto;
   animation: activity-tab-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -29,7 +26,7 @@
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #a78bfa;
+  color: #f472b6;
   font-weight: 700;
   margin-bottom: 4px;
 }
@@ -60,8 +57,6 @@
 .activity-stat-card {
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  /* border-left: 2px solid var(--stat-color, #a78bfa); */
-  /* border-right: 2px solid var(--stat-color, #a78bfa); */
   border-radius: 14px;
   padding: 14px 16px;
   display: flex;
@@ -72,8 +67,9 @@
 
 .activity-stat-card:hover {
   background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(244, 114, 182, 0.25);
   transform: translateY(-1px);
-  /* box-shadow: 0 8px 24px color-mix(in srgb, var(--stat-color, #a78bfa) 15%, transparent); */
+  box-shadow: 0 8px 24px rgba(236, 72, 153, 0.12);
 }
 
 .stat-card-header {
@@ -91,8 +87,8 @@
 }
 
 .stat-icon-wrap {
-  color: var(--stat-color, #a78bfa);
-  opacity: 0.85;
+  color: #f472b6;
+  opacity: 0.9;
 }
 
 .stat-value {
@@ -110,7 +106,6 @@
   justify-content: space-between;
   gap: 14px;
   padding: 2px 0 4px;
-  /* border-top: 1px solid rgba(255, 255, 255, 0.06); */
 }
 
 .activity-filter-chips {
@@ -133,13 +128,15 @@
 
 .activity-filter-chip:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: #f3f2f5;
+  border-color: rgba(244, 114, 182, 0.25);
+  color: #f472b6;
 }
 
 .activity-filter-chip.active {
-  background: rgba(167, 139, 250, 0.16);
-  border-color: rgba(167, 139, 250, 0.38);
-  color: #f3f2f5;
+  background: rgba(236, 72, 153, 0.18);
+  border-color: rgba(244, 114, 182, 0.4);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.2);
 }
 
 .activity-search-wrap {
@@ -156,12 +153,13 @@
   font-size: 12px;
   color: #f3f2f5;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .activity-search-input:focus {
-  border-color: rgba(167, 139, 250, 0.38);
+  border-color: rgba(244, 114, 182, 0.5);
   background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 14px rgba(236, 72, 153, 0.2);
 }
 
 .activity-search-input::placeholder {
@@ -183,8 +181,8 @@
   gap: 16px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.07);
-  border-left: 3px solid var(--agent-color, #a78bfa);
-  border-right: 3px solid var(--agent-color, #a78bfa);
+  border-left: 3px solid var(--agent-color, #f472b6);
+  border-right: 3px solid var(--agent-color, #f472b6);
   border-radius: 14px;
   padding: 14px 18px;
   transition: all 0.2s ease;
@@ -199,9 +197,9 @@
 
 .activity-row:hover {
   background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(244, 114, 182, 0.25);
   transform: translateX(4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.12);
 }
 
 .activity-agent-badge {
@@ -212,7 +210,7 @@
   flex-shrink: 0;
 }
 
-.agent-info{
+.agent-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -253,10 +251,9 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #a78bfa;
+  color: #f472b6;
   border-radius: 4px;
   white-space: nowrap;
-  
 }
 
 .activity-action-text {
@@ -306,8 +303,8 @@
 }
 
 .activity-status-badge.status-pending_review {
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.14);
+  color: #f472b6;
+  background: rgba(236, 72, 153, 0.16);
 }
 
 .activity-time-text {
@@ -327,21 +324,21 @@
   color: #8b88a6;
 }
 
-.activity-empty-state p{
+.activity-empty-state p {
   margin: 4px;
 }
 
 .empty-icon {
-  color: #a78bfa;
-  opacity: 0.6;
+  color: #f472b6;
+  opacity: 0.7;
 }
 
-/* ── Activity Detail Modal Overlay ────────────────────────────────────── */
+/* ── Activity Detail Side Modal Overlay ────────────────────────────────── */
 .activity-modal-backdrop {
   position: fixed;
   inset: 0;
-  /* background: rgba(4, 2, 10, 0.72); */
-  /* backdrop-filter: blur(8px); */
+  background: rgba(4, 6, 16, 0.5);
+  backdrop-filter: blur(8px);
   z-index: 100;
   display: flex;
   justify-content: flex-end;
@@ -353,17 +350,17 @@
   to   { opacity: 1; }
 }
 
-.topclose{
+.topclose {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .activity-side-modal {
   width: min(450px, 100%);
   height: 100%;
-  background: rgba(4, 5, 10, 0.795);
-  /* backdrop-filter: blur(3px); */
-  border-left: 1px solid rgba(255, 255, 255, 0.089);
+  background: rgba(12, 10, 16, 0.9);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(244, 114, 182, 0.15);
   box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
   padding: 28px 24px;
@@ -403,11 +400,11 @@
 }
 
 .activity-modal-close {
-  background: transparent;
-  border: transparent;
-  color: #908da1;
-  width: 32px;
-  height: 32px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f3f2f5;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -418,9 +415,10 @@
 }
 
 .activity-modal-close:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #f3f2f5;
-  transform: scale(1.08);
+  background: rgba(248, 113, 113, 0.15);
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.35);
+  transform: scale(1.05);
 }
 
 .activity-modal-agent-row {
@@ -466,7 +464,8 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #7b7492;
+  color: #f472b6;
+  opacity: 0.9;
 }
 
 .spec-value {
@@ -477,7 +476,7 @@
 
 .spec-value.code {
   font-family: "SF Mono", "Courier New", monospace;
-  color: #a78bfa;
+  color: #f472b6;
 }
 
 .spec-value.highlight {
@@ -495,7 +494,8 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #7b7492;
+  color: #f472b6;
+  opacity: 0.9;
   font-family: "SF Mono", "Courier New", monospace;
 }
 
@@ -512,7 +512,7 @@
 
 .activity-log-box {
   background: rgba(6, 3, 14, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(244, 114, 182, 0.2);
   border-radius: 10px;
   padding: 12px 14px;
   overflow-x: auto;
@@ -523,7 +523,7 @@
   font-family: "SF Mono", "Courier New", monospace;
   font-size: 11px;
   line-height: 1.6;
-  color: #38bdf8;
+  color: #f472b6;
 }
 
 .activity-modal-footer {
@@ -535,21 +535,20 @@
   width: 100%;
   padding: 11px;
   border-radius: 10px;
-  border: 1px solid rgba(167, 139, 250, 0.35);
-  background: linear-gradient(135deg, rgba(167, 139, 250, 0.18), rgba(124, 58, 237, 0.12));
-  color: #f3f2f5;
+  border: 1px solid rgba(244, 114, 182, 0.4);
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  color: #ffffff;
   font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.3);
 }
 
 .activity-modal-action-btn:hover {
-  background: linear-gradient(135deg, rgba(167, 139, 250, 0.28), rgba(124, 58, 237, 0.22));
-  border-color: rgba(167, 139, 250, 0.55);
+  background: linear-gradient(135deg, #f472b6, #e11d48);
+  box-shadow: 0 0 18px rgba(236, 72, 153, 0.5);
 }
-
-/* Append to ActivityTab.css — reload button + its row wrapper */
 
 .activity-controls-right {
   display: flex;
@@ -574,9 +573,9 @@
 }
 
 .activity-reload-btn:hover:not(:disabled) {
-  background: rgba(167, 139, 250, 0.14);
-  border-color: rgba(167, 139, 250, 0.32);
-  color: #f3f2f5;
+  background: rgba(236, 72, 153, 0.16);
+  border-color: rgba(244, 114, 182, 0.35);
+  color: #f472b6;
 }
 
 .activity-reload-btn:disabled {

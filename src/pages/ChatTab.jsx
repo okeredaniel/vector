@@ -648,121 +648,14 @@ const handleSubmit = (event) => {
           <div className="chat-tab-header-left">
             {/* VECTOR */}
             
-            <div className="chat-history-wrap" ref={historyRef}>
-              <button
-                type="button"
-                className="chat-history-toggle"
-                onClick={() => setHistoryOpen((prev) => !prev)}
-                title="Chat history"
-              >
-                <History size={16} strokeWidth={2.5} />
-                <ChevronDown
-                  size={13}
-                  className={`chat-history-chevron ${historyOpen ? "open" : ""}`}
-                />
-              </button>
-
-              {historyOpen && (
-                <div className="chat-history-dropdown">
-                  <input
-                    type="text"
-                    className="chat-history-search"
-                    placeholder="Search chats..."
-                    value={historySearch}
-                    onChange={(e) => setHistorySearch(e.target.value)}
-                  />
-
-                  <button
-                    type="button"
-                    className="chat-history-new-item"
-                    onClick={() => {
-                      if (messages.length === 0) return;
-                      startNewChat();
-                      setHistoryOpen(false);
-                    }}
-                    disabled={messages.length === 0}
-                    title={
-                      messages.length === 0
-                        ? "New chat already active"
-                        : "New chat"
-                    }
-                  >
-                    <MessageSquarePlus size={14} />
-                    <span>New chat</span>
-                  </button>
-
-                  <div className="chat-history-dropdown-header">
-                    {historySearch ? "Results" : "Recents"}
-                  </div>
-                  {(historySearch
-                    ? searchHistory(historySearch)
-                    : sessionList.map((s) => ({
-                        sessionId: s.id,
-                        sessionTitle: s.title,
-                        snippet: null,
-                      }))
-                  ).map((item) => (
-                    <div
-                      key={item.messageId || item.sessionId}
-                      className={`chat-history-item ${activeSessionId === item.sessionId ? "active" : ""}`}
-                      onClick={() => {
-                        switchChat(item.sessionId);
-                        setHistoryOpen(false);
-                        setHistorySearch("");
-                      }}
-                    >
-                      <MessageSquare size={14} className="history-icon" />
-                      <div className="history-text">
-                        <span className="history-title">
-                          {capitalizeFirst(item.sessionTitle)}
-                        </span>
-                        {item.snippet && (
-                          <span className="history-snippet">
-                            {item.snippet}
-                          </span>
-                        )}
-                      </div>
-                      {!historySearch && (
-                        <>
-                          <button
-                            type="button"
-                            className="history-pin-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              togglePin(item.sessionId);
-                            }}
-                            title={
-                              sessionList.find((s) => s.id === item.sessionId)
-                                ?.pinned
-                                ? "Unpin"
-                                : "Pin"
-                            }
-                          >
-                            {sessionList.find((s) => s.id === item.sessionId)
-                              ?.pinned ? (
-                              <Pin size={12} fill="currentColor" />
-                            ) : (
-                              <PinOff size={12} />
-                            )}
-                          </button>
-                          <button
-                            type="button"
-                            className="history-delete-btn"
-                            onClick={(e) =>
-                              handleDeleteHistory(e, item.sessionId)
-                            }
-                            title="Delete conversation"
-                          >
-                            <Trash2 size={12} />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
+            <button
+              type="button"
+              className="chat-history-toggle"
+              onClick={() => setHistoryOpen(true)}
+              title="Chat history"
+            >
+              <History size={16} strokeWidth={2.5} />
+            </button>
           </div>
 
           <div className="chat-tab-header-right">
@@ -970,6 +863,7 @@ const handleSubmit = (event) => {
                   >
                     <Plus size={20} />
                   </button>
+                  
                   <button
                     type={isSending ? "button" : "submit"}
                     className={`chat-action ${isSending ? "is-sending" : "is-send"}`}
@@ -1029,7 +923,7 @@ const handleSubmit = (event) => {
       {pendingDeleteId && (
         <ConfirmDialog
           title="Delete this chat?"
-          message="This will permanently delete the conversation and its messages. This can't be undone."
+          message="This will permanently delete the conversation and its messages."
           onConfirm={confirmDelete}
           onCancel={() => setPendingDeleteId(null)}
         />
@@ -1042,6 +936,142 @@ const handleSubmit = (event) => {
           onConfirm={() => setOversizeError(null)}
           onCancel={() => setOversizeError(null)}
         />
+      )}
+
+      {historyOpen && (
+        <div
+          className="chat-history-drawer-backdrop"
+          onClick={() => setHistoryOpen(false)}
+        >
+          <div
+            className="chat-history-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="history-drawer-top">
+              
+              <button
+                type="button"
+                className="history-drawer-close"
+                onClick={() => setHistoryOpen(false)}
+                aria-label="Close history"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="history-drawer-header">
+              {/* <div className="modal-icon-wrap">
+                <History size={22} />
+              </div> */}
+              <div className="history-drawer-title-text">
+                <span className="modal-tag">Chat History</span>
+                <h2>Conversations</h2>
+              </div>
+              <div className="secm">
+                <button
+              type="button"
+              className="history-new-chat-btn"
+              onClick={() => {
+                if (messages.length === 0) return;
+                startNewChat();
+                setHistoryOpen(false);
+              }}
+              disabled={messages.length === 0}
+              title={
+                messages.length === 0
+                  ? "New chat already active"
+                  : "Start a new chat"
+              }
+            >
+              <MessageSquarePlus size={15} />
+            </button></div>
+            </div>
+
+            
+
+            <div className="history-drawer-search-wrap">
+              <input
+                type="text"
+                className="history-drawer-search"
+                placeholder="Search conversations..."
+                value={historySearch}
+                onChange={(e) => setHistorySearch(e.target.value)}
+              />
+            </div>
+
+            <div className="history-drawer-body">
+              <div className="history-drawer-section-heading">
+                {historySearch ? "Search Results" : "Recents"}
+              </div>
+
+              {(historySearch
+                ? searchHistory(historySearch)
+                : sessionList.map((s) => ({
+                    sessionId: s.id,
+                    sessionTitle: s.title,
+                    snippet: null,
+                  }))
+              ).map((item) => (
+                <div
+                  key={item.messageId || item.sessionId}
+                  className={`chat-history-item ${activeSessionId === item.sessionId ? "active" : ""}`}
+                  onClick={() => {
+                    switchChat(item.sessionId);
+                    setHistoryOpen(false);
+                    setHistorySearch("");
+                  }}
+                >
+                  <MessageSquare size={14} className="history-icon" />
+                  <div className="history-text">
+                    <span className="history-title">
+                      {capitalizeFirst(item.sessionTitle)}
+                    </span>
+                    {item.snippet && (
+                      <span className="history-snippet">
+                        {item.snippet}
+                      </span>
+                    )}
+                  </div>
+                  {!historySearch && (
+                    <div className="history-actions">
+                      <button
+                        type="button"
+                        className="history-pin-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          togglePin(item.sessionId);
+                        }}
+                        title={
+                          sessionList.find((s) => s.id === item.sessionId)
+                            ?.pinned
+                            ? "Unpin conversation"
+                            : "Pin conversation"
+                        }
+                      >
+                        {sessionList.find((s) => s.id === item.sessionId)
+                          ?.pinned ? (
+                          <Pin size={12} fill="currentColor" />
+                        ) : (
+                          <PinOff size={12} />
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className="history-delete-btn"
+                        onClick={(e) =>
+                          handleDeleteHistory(e, item.sessionId)
+                        }
+                        title="Delete conversation"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
 
       <SettingsModal

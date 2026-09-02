@@ -1,5 +1,5 @@
 import React from "react";
-import { X, Settings, ShieldCheck, Zap, Download, Gauge } from "lucide-react";
+import { X, Settings, ShieldCheck, Zap, Download, Gauge, Sliders } from "lucide-react";
 import "./SettingsModal.css";
 
 const AGENT_OPTIONS = [
@@ -31,30 +31,34 @@ export default function SettingsModal({
   return (
     <div className="settings-modal-backdrop" onClick={onClose}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="settings-modal-header">
-          <div className="settings-modal-title">
-            <Settings size={20} className="settings-header-icon" />
-            {/* <h2>Vector Settings</h2> */}
-          </div>
+        <div className="settings-topclose">
           <button
             type="button"
             className="settings-modal-close"
             onClick={onClose}
             aria-label="Close settings"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
+        </div>
+          <span className="modal-tag">Vector Preferences</span>
+        <div className="settings-modal-header">
+          <div className="settings-modal-title-text">
+            <h2>Preferences</h2>
+          </div>
         </div>
 
         <div className="settings-modal-body">
+          {/* <div className="settings-section-heading">Agent & Execution</div> */}
+
           {/* Default Agent Preference */}
           <div className="settings-group">
             <div className="settings-group-header">
               <Zap size={16} className="group-icon" />
               <div>
-                <label className="settings-label">Default Model Agent</label>
+                <label className="settings-label">Default Agent</label>
                 <p className="settings-desc">
-                  Selected agent model for new conversations.
+                  {/* Selected agent model for new conversations. */}
                 </p>
               </div>
             </div>
@@ -91,6 +95,8 @@ export default function SettingsModal({
               <span className="toggle-slider" />
             </label>
           </div>
+
+          <div className="settings-section-heading">Display & Telemetry</div>
 
           {/* Telemetry & Rate Limits */}
           <div className="settings-group">
@@ -134,12 +140,6 @@ export default function SettingsModal({
             </select>
           </div>
         </div>
-
-        {/* <div className="settings-modal-footer">
-          <button type="button" className="settings-save-btn" onClick={onClose}>
-            Done
-          </button>
-        </div> */}
       </div>
     </div>
   );

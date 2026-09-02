@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./AccountTab.css";
 
+
 // ── Tool section data derived from the backend tools folder ──────────────
 const TOOL_SECTIONS = [
   {
@@ -70,7 +71,7 @@ const TOOL_SECTIONS = [
   },
   {
     id: "notes",
-    icon: "📝",
+    icon: "📝",   
     label: "Notes",
     color: "#a78bfa",
     description: "List, read, and search your notes folder.",

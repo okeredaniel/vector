@@ -105,11 +105,11 @@
 }
 .coordinate-readout span {
   font-size: 10px;
-  color: #7a7590;
+  color: #fa047f;
   letter-spacing: 0.03em;
 }
 .coordinate-readout span:first-child {
-  color: #5ec9c0;
+  color: #fa83c7;
 }
 
 /* ---------- signal bars (per-node activity indicator, replaces
@@ -497,7 +497,7 @@
   padding: 30px 22px 24px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 10px;
   box-shadow: -20px 0 50px rgba(0, 0, 0, 0.35);
   overflow-y: auto;
   animation: slideInModal 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -786,8 +786,8 @@
 
 .model-card {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-left: 2px solid var(--node-color, #8b5cf6);
+  border: 1px solid rgba(247, 1, 153, 0.07);
+  border-left: 2px solid var(--node-color, #fa0393);
   border-radius: 12px;
   padding: 12px 14px;
   display: flex;
@@ -1142,7 +1142,6 @@
   font-weight: 600;
   letter-spacing: 0.01em;
   background: rgba(255, 255, 255, 0.05);
-  /* background: linear-gradient(155deg, var(--node-color, #ac4343) 0%, #262627 100%); */
   padding: 0.5rem 0.9rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
@@ -1175,4 +1174,10 @@
 
 .ytb-box span{
     font-weight: 700;
+}
+
+.lop{
+position: absolute;
+    left: 35px;
+    bottom: 30px;
 }

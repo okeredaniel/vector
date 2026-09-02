@@ -64,7 +64,7 @@ function formatRelativeTime(isoString) {
 }
 
 export default function ActivityTab() {
-  const { activities, loaded, refresh } = useActivity();
+  const { activities, loaded, error, refresh } = useActivity();
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -197,14 +197,25 @@ export default function ActivityTab() {
 
       {/* Activity Timeline List */}
       <div className="activity-list">
-        {!loaded && (
+        {error && (
+          <div className="activity-empty-state activity-error-state">
+            <AlertCircle size={24} className="empty-icon" />
+            <p>Couldn't load activity: {error}</p>
+            <button type="button" className="activity-reload-btn" onClick={handleRefresh}>
+              <RefreshCw size={13} className={isRefreshing ? "spinning" : ""} />
+              <span>Try again</span>
+            </button>
+          </div>
+        )}
+
+        {!error && !loaded && (
           <div className="activity-empty-state">
             <Sparkles size={24} className="empty-icon" />
             <p>Loading activity history…</p>
           </div>
         )}
 
-        {loaded &&
+        {!error && loaded &&
           filteredActivities.map((act, index) => {
             return (
               <div
@@ -251,7 +262,7 @@ export default function ActivityTab() {
             );
           })}
 
-        {loaded && filteredActivities.length === 0 && (
+        {!error && loaded && filteredActivities.length === 0 && (
           <div className="activity-empty-state">
             <Sparkles size={24} className="empty-icon" />
             <p>No activity logs match your filter.</p>
@@ -337,15 +348,7 @@ export default function ActivityTab() {
               </div>
             </div>
 
-            <div className="activity-modal-footer">
-              <button
-                type="button"
-                className="activity-modal-action-btn"
-                onClick={() => setSelectedActivity(null)}
-              >
-                Close Trace
-              </button>
-            </div>
+          
           </aside>
         </div>
       )}

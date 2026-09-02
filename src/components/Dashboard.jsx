@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import Ytb from "../assets/Youtube.png"
 import { openUrl } from "@tauri-apps/plugin-opener";
-
+const [downloadProgress, setDownloadProgress] = useState(0); // 0-100
 
 const CANVAS_W = 1440;
 const CANVAS_H = 900;
@@ -119,7 +119,7 @@ function useStageScale(containerRef) {
       const scaleX = width / CANVAS_W;
       const scaleY = height / CANVAS_H;
         const raw = Math.min(scaleX, scaleY); // or Math.max if you want cover
-  setScale(Math.min(Math.max(raw, 1.05), 1.5));
+  setScale(Math.min(Math.max(raw, 1), 1.5));
     }
 
     computeScale(el.clientWidth, el.clientHeight);
@@ -403,12 +403,33 @@ const connectionState = !browserOnline
 const installUpdate = useCallback(async () => {
   if (!updateRef.current) return;
   setUpdateDownloading(true);
+  setDownloadProgress(0);
+
+  let downloaded = 0;
+  let contentLength = 0;
+
   try {
-    await updateRef.current.downloadAndInstall();
+    await updateRef.current.downloadAndInstall((event) => {
+      switch (event.event) {
+        case "Started":
+          contentLength = event.data.contentLength;
+          break;
+        case "Progress":
+          downloaded += event.data.chunkLength;
+          if (contentLength > 0) {
+            setDownloadProgress(Math.round((downloaded / contentLength) * 100));
+          }
+          break;
+        case "Finished":
+          setDownloadProgress(100);
+          break;
+      }
+    });
     await relaunch();
   } catch (err) {
     console.error("[Updater] install failed:", err);
     setUpdateDownloading(false);
+    setDownloadProgress(0);
   }
 }, []);
 
@@ -885,7 +906,8 @@ useEffect(() => {
 >
   <span>Youtube</span>
 </button>
-          <button className={`conn-status ${connectionState}`}>{connLabel}</button>
+
+          
           <div
             className="widget notification-widget icon-only"
             role="button"
@@ -907,7 +929,9 @@ useEffect(() => {
       </div>
 
       <CoordinateReadout nodeCount={nodesList.length} activeCount={activeCount} />
-
+<div className="lop">
+  <button className={`conn-status ${connectionState}`}>{connLabel}</button>
+</div>
       {activeNode && (
         <div className="modal-backdrop" onClick={closeModal}>
           <aside className="side-modal" onClick={(event) => event.stopPropagation()}>
@@ -1061,7 +1085,34 @@ useEffect(() => {
                 onClick={installUpdate}
                 disabled={updateDownloading}
               >
-                {updateDownloading ? "Installing…" : "Download & Install"}
+              {updateDownloading && (
+  <div style={{ marginBottom: 10 }}>
+    <div style={{
+      width: "100%",
+      height: 6,
+      background: "rgba(255,255,255,0.1)",
+      borderRadius: 4,
+      overflow: "hidden",
+    }}>
+      <div style={{
+        width: `${downloadProgress}%`,
+        height: "100%",
+        background: "#00ee3b",
+        transition: "width 0.2s ease",
+      }} />
+    </div>
+  </div>
+)}
+<div className="action-btn-group">
+  <button
+    type="button"
+    className="action-decision-btn primary"
+    onClick={installUpdate}
+    disabled={updateDownloading}
+  >
+    {updateDownloading ? `Downloading… ${downloadProgress}%` : "Download & Install"}
+  </button>
+</div>
               </button>
             </div>
           </div>
@@ -1069,7 +1120,7 @@ useEffect(() => {
           <div className="notification-empty">
             <div className="action-clear-icon">✓</div>
             <p className="notification-title">
-              {updateChecking ? "Checking for updates…" : "VECTOR is up to date"}
+              {updateChecking ? "Checking for updates…" : ""}
             </p>
           </div>
         )}

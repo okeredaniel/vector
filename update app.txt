@@ -1,0 +1,6 @@
+# bump "version" in tauri.conf.json
+git add .
+git commit -m "release vX.X.X"
+git push
+git tag vX.X.X
+git push origin vX.X.X

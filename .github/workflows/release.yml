@@ -46,7 +46,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: "VECTOR ${{ github.ref_name }}"
-          releaseBody: "See the release notes below."
+          generateReleaseNotes: true
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}

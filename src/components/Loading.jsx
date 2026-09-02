@@ -1,15 +1,20 @@
 import { useEffect, useRef, useState } from "react";
+import { Sparkles, Cpu, Zap, CheckCircle2 } from "lucide-react";
 import "./Loading.css";
 
-const FONT_SIZE = 15;
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01#$%&*+=-/\\";
-const WORDS = ["DEV", "RESEARCH", "COMMS", "DATA", "MONITOR", "FINANCE", "FILES", "SIGMA", "MESH", "VECTOR"];
-const COLORS = ["#a78bfa", "#5ec9c0", "#f2617c", "#e8a33d", "#5fd97e", "#5b8def"];
+const FONT_SIZE = 14;
+const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*+=-/\\";
+const WORDS = ["ATLAS", "IGRIS", "SORA", "SHIRO", "JOHAN", "LIGHT", "ARMIN", "REIGEN", "VECTOR"];
+const COLORS = ["#f472b6", "#ec4899", "#db2777", "#fbcfe8", "#ffffff"];
 
-const STATUSES = ["", " ", " ", "", ""];
-const CIPHER_STATES = ["ACTIVE", "STABLE", "VERIFIED"];
+const BOOT_STAGES = [
+  "Initializing Neural Runtime...",
+  "Connecting Agent Mesh Router...",
+  "Loading Encryption & Security Layer...",
+  "Syncing Workspace State...",
+  "Vector Ready",
+];
 
-// "#05060f" -> "5, 6, 15", used to build the canvas trail-fade rgba()
 function hexToRgbTriplet(hex) {
   const clean = hex.replace("#", "");
   const full = clean.length === 3 ? clean.split("").map((c) => c + c).join("") : clean;
@@ -19,27 +24,26 @@ function hexToRgbTriplet(hex) {
 
 export default function Loading({
   onDone,
-  minDuration = 2600,
-  offlineExtraDuration = 2200,
-  bgColor = "#05091a",
+  minDuration = 2200,
+  bgColor = "#0a090e",
 }) {
   const canvasRef = useRef(null);
   const rootRef = useRef(null);
   const bgRgb = hexToRgbTriplet(bgColor);
-  const [resolvedCount, setResolvedCount] = useState(0);
-  const [statusText, setStatusText] = useState(STATUSES[0]);
-  const [cipherText, setCipherText] = useState(CIPHER_STATES[0]);
+
+  const [progress, setProgress] = useState(0);
+  const [stageIndex, setStageIndex] = useState(0);
+  const [fadingOut, setFadingOut] = useState(false);
   const [isOnline, setIsOnline] = useState(
     typeof navigator !== "undefined" ? navigator.onLine : true
   );
-  const [fadingOut, setFadingOut] = useState(false);
 
-  // matrix-style cipher rain, driven by canvas + rAF
+  // Matrix-style pink cipher rain
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     let W, H, columns, rafId;
-    let resolvedRef = 0;
 
     function resize() {
       W = canvas.width = window.innerWidth;
@@ -47,9 +51,9 @@ export default function Loading({
       const colCount = Math.ceil(W / FONT_SIZE);
       columns = Array.from({ length: colCount }, () => ({
         y: Math.random() * -H,
-        speed: 3 + Math.random() * 5,
+        speed: 2.5 + Math.random() * 4,
         color: COLORS[(Math.random() * COLORS.length) | 0],
-        word: Math.random() < 0.15 ? WORDS[(Math.random() * WORDS.length) | 0] : null,
+        word: Math.random() < 0.18 ? WORDS[(Math.random() * WORDS.length) | 0] : null,
         wordIdx: 0,
       }));
     }
@@ -57,24 +61,24 @@ export default function Loading({
     window.addEventListener("resize", resize);
 
     function draw() {
-      ctx.fillStyle = `rgba(${bgRgb}, 0.16)`;
+      ctx.fillStyle = `rgba(${bgRgb}, 0.18)`;
       ctx.fillRect(0, 0, W, H);
-      ctx.font = FONT_SIZE + 'px "SF Mono", Consolas, monospace';
+      ctx.font = FONT_SIZE + 'px "JetBrains Mono", Consolas, monospace';
 
       columns.forEach((col, i) => {
         const x = i * FONT_SIZE;
         let ch;
         if (col.word) {
           ch = col.word[col.wordIdx % col.word.length];
-          ctx.fillStyle = "#f3f0ff";
+          ctx.fillStyle = "#ffffff";
           ctx.shadowColor = col.color;
-          ctx.shadowBlur = 8;
+          ctx.shadowBlur = 10;
         } else {
           ch = GLYPHS[(Math.random() * GLYPHS.length) | 0];
           ctx.fillStyle = col.color;
           ctx.shadowColor = col.color;
           ctx.shadowBlur = 4;
-          ctx.globalAlpha = 0.75;
+          ctx.globalAlpha = 0.65;
         }
         ctx.fillText(ch, x, col.y);
         ctx.globalAlpha = 1;
@@ -85,16 +89,10 @@ export default function Loading({
 
         if (col.y > H && Math.random() > 0.975) {
           col.y = Math.random() * -200;
-          col.speed = 3 + Math.random() * 5;
+          col.speed = 2.5 + Math.random() * 4;
           col.color = COLORS[(Math.random() * COLORS.length) | 0];
-          if (Math.random() < 0.15) {
-            col.word = WORDS[(Math.random() * WORDS.length) | 0];
-            col.wordIdx = 0;
-            resolvedRef++;
-            setResolvedCount(resolvedRef);
-          } else {
-            col.word = null;
-          }
+          col.word = Math.random() < 0.18 ? WORDS[(Math.random() * WORDS.length) | 0] : null;
+          col.wordIdx = 0;
         }
       });
 
@@ -108,50 +106,30 @@ export default function Loading({
     };
   }, [bgRgb]);
 
-  // track connectivity live, so a status change mid-boot updates the UI
+  // Smooth Progress Bar counter
   useEffect(() => {
-    function handleOnline() { setIsOnline(true); }
-    function handleOffline() { setIsOnline(false); }
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, Math.floor((elapsed / minDuration) * 100));
+      setProgress(pct);
 
-  // cycling status readouts
-  useEffect(() => {
-    let si = 0;
-    const id = setInterval(() => {
-      si = (si + 1) % STATUSES.length;
-      setStatusText(STATUSES[si]);
-    }, 1500);
-    return () => clearInterval(id);
-  }, []);
+      const stage = Math.min(
+        BOOT_STAGES.length - 1,
+        Math.floor((pct / 100) * BOOT_STAGES.length)
+      );
+      setStageIndex(stage);
 
-  useEffect(() => {
-    let ci = 0;
-    const id = setInterval(() => {
-      ci = (ci + 1) % CIPHER_STATES.length;
-      setCipherText(CIPHER_STATES[ci]);
-    }, 2000);
-    return () => clearInterval(id);
-  }, []);
+      if (pct >= 100) {
+        clearInterval(interval);
+        setTimeout(() => setFadingOut(true), 200);
+      }
+    }, 30);
 
-  // decide how long to hold the screen: if we're offline when booting
-  // starts, hold a bit longer so the "limited mode" state is legible
-  // instead of flashing past
-  useEffect(() => {
-    const startedOffline = typeof navigator !== "undefined" && !navigator.onLine;
-    const holdFor = minDuration + (startedOffline ? offlineExtraDuration : 0);
-    const t = setTimeout(() => setFadingOut(true), holdFor);
-    return () => clearTimeout(t);
-  }, [minDuration, offlineExtraDuration]);
+    return () => clearInterval(interval);
+  }, [minDuration]);
 
-  // wait for the CSS opacity transition to actually finish before telling
-  // the parent we're done, so the fade reads as one smooth motion instead
-  // of an abrupt swap underneath it
+  // Smooth fade-out finish
   useEffect(() => {
     if (!fadingOut) return;
     const node = rootRef.current;
@@ -163,41 +141,58 @@ export default function Loading({
     return () => node.removeEventListener("transitionend", handleEnd);
   }, [fadingOut, onDone]);
 
-  const displayStatus = isOnline ? statusText : "NO CONNECTION";
-  const displayCipher = isOnline ? cipherText : "LIMITED";
-
   return (
     <div
       ref={rootRef}
-      className={`cipher-screen${fadingOut ? " fade-out" : ""}`}
-      style={{ "--cipher-bg": bgColor }}
+      className={`vector-loading-screen${fadingOut ? " fade-out" : ""}`}
+      style={{ "--loading-bg": bgColor }}
     >
-      <canvas ref={canvasRef} className="cipher-rain" />
-      <div className="cipher-vignette" />
-      <div className="cipher-grain" />
+      <canvas ref={canvasRef} className="loading-canvas" />
+      <div className="loading-vignette" />
+      <div className="loading-grid-overlay" />
 
-      <div className="cipher-bracket bl-top" />
-      <div className="cipher-bracket bl-bottom" />
-      <div className="cipher-bracket br-top" />
-      <div className="cipher-bracket br-bottom" />
+      {/* Outer corner brackets */}
+      <div className="loading-bracket tl" />
+      <div className="loading-bracket tr" />
+      <div className="loading-bracket bl" />
+      <div className="loading-bracket br" />
 
-      <div className="cipher-corner tl">
-      
-        <br />
-        <span className={`accent${!isOnline ? " warn" : ""}`}>{displayStatus}</span>
-      </div>
-      <div className="cipher-corner br">
-        <h1>VECTOR</h1> 
-      </div>
-
-
-
-      {!isOnline && (
-        <div className="cipher-offline-banner">
-          <span className="dot" />
-          Offline — some actions will be restricted
+      {/* Center glowing brand & progress box */}
+      <div className="loading-center">
+        <div className="loading-logo-wrap">
+          <div className="loading-logo-icon">
+            <Sparkles size={28} />
+          </div>
+          <h1 className="loading-wordmark">VECTOR</h1>
         </div>
-      )}
+
+        <p className="loading-subheading">NEURAL AGENT EXECUTION SYSTEM</p>
+
+        {/* Progress bar container */}
+        <div className="loading-progress-box">
+          <div className="loading-bar-track">
+            <div
+              className="loading-bar-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="loading-progress-row">
+            <span className="loading-stage-text">
+              {BOOT_STAGES[stageIndex]}
+            </span>
+            <span className="loading-pct-text">{progress}%</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer status readout */}
+      <div className="loading-footer-row">
+        <div className="loading-status-badge">
+          <span className="status-dot" />
+          <span>SYS_STATUS: ONLINE</span>
+        </div>
+        <span className="loading-ver">v2.4.0</span>
+      </div>
     </div>
   );
 }
